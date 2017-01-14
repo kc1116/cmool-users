@@ -6,6 +6,7 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
+	"github.com/kc1116/cmool-events/events"
 	neoism "gopkg.in/jmcvetta/neoism.v1"
 )
 
@@ -21,9 +22,14 @@ func init() {
 	}
 }
 
-type api interface {
-	area() float64
-	perim() float64
+//API ... interface to be implemented by user struct
+type API interface {
+	attending() events.Event
+	postVideo() bool
+	postComment() bool
+	postPhoto() bool
+	sendFriendRequest() bool
+	acceptFriendRequest() bool
 }
 
 // User ... event struct for neo4j event nodes
@@ -103,4 +109,40 @@ func GetUserNode(identifier string) (map[string]interface{}, error) {
 	}
 
 	return res[0].User.Data, nil
+}
+
+func (user User) attending(event events.Event) (events.Event, error) {
+	rel := events.EventRelationships["IsAttending"]
+	stmt := `
+		MATCH (user:User),(event:Event)
+        WHERE user.UniqueID = {userid} AND event.UniqueID = {eventid}
+        CREATE UNIQUE (user)-[r:` + rel + `]->(event)
+        RETURN r
+	`
+	params := neoism.Props{
+		"userid":  user.Properties.UniqueID,
+		"eventid": event.Properties.UniqueID,
+	}
+
+	// query results
+	res := []struct {
+		User  string `json:"user.Name"` // `json` tag matches column name in query
+		Rel   string `json:"type(r)"`
+		Event string `json:"event.Name"`
+	}{}
+
+	cq := neoism.CypherQuery{
+		Statement:  stmt,
+		Parameters: params,
+		Result:     &res,
+	}
+
+	// execute query
+	err := Db.Cypher(&cq)
+	if err != nil {
+		return event, err
+	}
+	//r := res[0]
+	return event, nil
+
 }
