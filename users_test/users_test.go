@@ -40,3 +40,17 @@ func TestGetUserNode(t *testing.T) {
 	}
 
 }
+
+func TestUserAttending(t *testing.T) {
+	var testUser users.User
+	testUser.Properties.Name = "Test"
+	testUser.Properties.DateJoined = time.Now()
+	testUser.Properties.Description = "This is a test users."
+	testUser.Properties.EventInterest = []string{"parties", "career", "meetup"}
+	testUser.Properties.ProfilePhoto = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjWFifmZY2WER6nCFNZOCtF2WSRm2vkDr3erTHUdTWFI8tCoQDJaXNJ5c"
+	testUser.Properties.City = "Harrison"
+	testUser.Properties.State = "New Jersey"
+	testUser.Properties.UniqueID = "daa72fb3-9964-43be-8288-dece8389eba6"
+
+	testUser
+}

@@ -111,7 +111,8 @@ func GetUserNode(identifier string) (map[string]interface{}, error) {
 	return res[0].User.Data, nil
 }
 
-func (user User) attending(event events.Event) (events.Event, error) {
+//Attending ...
+func (user User) Attending(event events.Event) (events.Event, error) {
 	rel := events.EventRelationships["IsAttending"]
 	stmt := `
 		MATCH (user:User),(event:Event)
