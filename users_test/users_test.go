@@ -52,5 +52,12 @@ func TestUserAttending(t *testing.T) {
 	testUser.Properties.State = "New Jersey"
 	testUser.Properties.UniqueID = "daa72fb3-9964-43be-8288-dece8389eba6"
 
-	testUser
+	testEventID := "3e8c0e55-3971-436a-b76e-7414be2db023"
+
+	eid, err := testUser.Attending(testEventID)
+	if err != nil {
+		t.Error("Expected an event ID got an error:", err.Error())
+	} else {
+		t.Logf("TestUserAttending:%+v\n", eid)
+	}
 }
