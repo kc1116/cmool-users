@@ -112,7 +112,7 @@ func GetUserNode(identifier string) (map[string]interface{}, error) {
 }
 
 //Attending ...
-func (user User) Attending(event events.Event) (events.Event, error) {
+func (user User) Attending(eventID string) (string, error) {
 	rel := events.EventRelationships["IsAttending"]
 	stmt := `
 		MATCH (user:User),(event:Event)
@@ -122,7 +122,7 @@ func (user User) Attending(event events.Event) (events.Event, error) {
 	`
 	params := neoism.Props{
 		"userid":  user.Properties.UniqueID,
-		"eventid": event.Properties.UniqueID,
+		"eventid": eventID,
 	}
 
 	// query results
@@ -141,9 +141,9 @@ func (user User) Attending(event events.Event) (events.Event, error) {
 	// execute query
 	err := Db.Cypher(&cq)
 	if err != nil {
-		return event, err
+		return eventID, err
 	}
 	//r := res[0]
-	return event, nil
+	return eventID, nil
 
 }
