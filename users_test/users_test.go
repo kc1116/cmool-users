@@ -5,41 +5,38 @@ import (
 	"time"
 
 	"github.com/kc1116/cmool-events/events"
+	"github.com/kc1116/cmool-users/users"
 )
 
 var db = events.Db
 
 func TestCreateUserNode(t *testing.T) {
-	var testEvent events.Event
-	testEvent.Properties.Name = "Test"
-	testEvent.Properties.DateCreated = time.Now()
-	testEvent.Properties.Description = "This is a test event."
-	testEvent.Properties.Keywords = []string{"key", "words"}
-	testEvent.Properties.Rating = 3.5
-	testEvent.Properties.TypeOfEvent = "Just a Test"
-	testEvent.Properties.Emblem = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjWFifmZY2WER6nCFNZOCtF2WSRm2vkDr3erTHUdTWFI8tCoQDJaXNJ5c"
-	testEvent.Properties.Location.City = "Harrison"
-	testEvent.Properties.Location.State = "New Jersey"
-	testEvent.Properties.Location.StreetAddress = "1 Harrison ave"
-	testEvent.Properties.Location.ZipCode = "07029"
+	var testUser users.User
+	testUser.Properties.Name = "Test"
+	testUser.Properties.DateJoined = time.Now()
+	testUser.Properties.Description = "This is a test users."
+	testUser.Properties.EventInterest = []string{"parties", "career", "meetup"}
+	testUser.Properties.ProfilePhoto = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRjWFifmZY2WER6nCFNZOCtF2WSRm2vkDr3erTHUdTWFI8tCoQDJaXNJ5c"
+	testUser.Properties.City = "Harrison"
+	testUser.Properties.State = "New Jersey"
 
-	event, err := events.CreateEventNode(testEvent)
+	user, err := users.CreateUserNode(testUser)
 	if err != nil {
-		t.Error("Expected an test event got an error:", err.Error())
+		t.Error("Expected an test user got an error:", err.Error())
 	} else {
-		t.Logf("TestCreateEventNode:%+v\n", event.Properties.UniqueID)
+		t.Logf("TestCreateUserNode:%+v\n", user.Properties.UniqueID)
 	}
 
 }
 
-func TestGetEventNode(t *testing.T) {
-	uuid := "3e8c0e55-3971-436a-b76e-7414be2db023"
+func TestGetUserNode(t *testing.T) {
+	uuid := "daa72fb3-9964-43be-8288-dece8389eba6"
 
-	event, err := events.GetEventNode(uuid)
+	user, err := users.GetUserNode(uuid)
 	if err != nil {
-		t.Error("Expected an test event got an error:", err.Error())
+		t.Error("Expected an test user got an error:", err.Error())
 	} else {
-		t.Logf("TestGetEventNode:%+v\n", event)
+		t.Logf("TestGetUserNode:%+v\n", user)
 	}
 
 }
