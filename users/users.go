@@ -50,9 +50,10 @@ type Properties struct {
 }
 
 // UserRelationships ... neo4j relationships associated with Event nodes
-var UserRelationships = map[string]interface{}{
-	"Liked":    "LIKED",
-	"FriendOf": "FRIEND_OF",
+var UserRelationships = map[string]string{
+	"Liked":        "LIKED",
+	"FriendOf":     "FRIEND_OF",
+	"EventComment": "EVENT_COMMENT",
 }
 
 // CreateUserNode . . . create a new user node from Event struct
@@ -146,4 +147,49 @@ func (user User) Attending(eventID string) (string, error) {
 	//r := res[0]
 	return eventID, nil
 
+}
+
+//PostComment ...
+func (user User) PostComment(comment string, eventID string, userID string) (string, error) {
+	uid := uuid.NewV4().String()
+
+	stmt := `
+		MERGE (comment:EventComment {
+				User: {uid},
+				DatePosted: {date},
+				Comment:{comment},
+				UniqueID:{uniqueID},
+})-[` + UserRelationships["EventComment"] + `]->(event:Event {UniqueID: {eid} })
+	RETURN comment
+	`
+	params := neoism.Props{
+		"uid":      userID,
+		"eid":      eventID,
+		"uniqueID": uid,
+		"date":     time.Now(),
+		"comment":  comment,
+	}
+
+	// query results
+	res := []struct {
+		Comment neoism.Node
+	}{}
+
+	cq := neoism.CypherQuery{
+		Statement:  stmt,
+		Parameters: params,
+		Result:     &res,
+	}
+
+	// execute query
+	err := Db.Cypher(&cq)
+	if err != nil {
+		return "", err
+	}
+	if len(res) == 0 {
+		err := errors.New("User node not found.")
+		return "", err
+	}
+
+	return comment, nil
 }
