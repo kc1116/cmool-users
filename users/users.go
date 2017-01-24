@@ -153,14 +153,10 @@ func (user User) Attending(eventID string) (string, error) {
 func PostComment(comment string, eventID string, userID string) (string, error) {
 	uid := uuid.NewV4().String()
 	rel := UserRelationships["EventComment"]
-	stmt := `MERGE (comment:EventComment {
-				User: {uid},
-				DatePosted: {date},
-				Comment:{comment},
-				UniqueID:{uniqueID},
-		})-[r:` + rel + `]->(event:Event {UniqueID: {eid} })
-	RETURN comment`
-
+	stm := `MATCH (event:Event)
+            WHERE event.UniqueID = {eid}
+		    MERGE (comment:EventComment {User:{uid},DatePosted:{date},Comment:{comment},UniqueID:{uniqueID},})-[r:` + rel + `]->(event)
+		    RETURN comment`
 	params := neoism.Props{
 		"uid":      userID,
 		"eid":      eventID,
