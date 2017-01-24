@@ -2,7 +2,6 @@ package cmn4j_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/kc1116/cmool-events/events"
 	"github.com/kc1116/cmool-users/users"
@@ -10,7 +9,7 @@ import (
 
 var db = events.Db
 
-func TestCreateUserNode(t *testing.T) {
+/*func TestCreateUserNode(t *testing.T) {
 	var testUser users.User
 	testUser.Properties.Name = "Test"
 	testUser.Properties.DateJoined = time.Now()
@@ -60,7 +59,7 @@ func TestUserAttending(t *testing.T) {
 	} else {
 		t.Logf("TestUserAttending:%+v\n", eid)
 	}
-}
+}*/
 
 func TestPostComment(t *testing.T) {
 	comment := "This party is great!"
