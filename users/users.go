@@ -234,7 +234,7 @@ func LikeEvent(eventID string, userID string) error {
 	rel := UserRelationships["Liked"]
 	stmt := `
 		MATCH (user:User),(event:Event)
-        WHERE user.UniqueID = {userid} AND event.UniqueID = {eventid}
+        WHERE user.UniqueID = {uid} AND event.UniqueID = {eid}
 		SET event.Likes = event.Likes + 1
         CREATE UNIQUE (user)-[r:` + rel + `]->(event)
         RETURN r`
