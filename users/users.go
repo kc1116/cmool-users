@@ -150,7 +150,7 @@ func (user User) Attending(eventID string) (string, error) {
 }
 
 //PostComment ...
-func (user User) PostComment(comment string, eventID string) (string, error) {
+func PostComment(comment string, eventID string, userID string) (string, error) {
 	uid := uuid.NewV4().String()
 	stmt := `
 		MERGE (comment:EventComment {
@@ -162,7 +162,7 @@ func (user User) PostComment(comment string, eventID string) (string, error) {
 	RETURN comment
 	`
 	params := neoism.Props{
-		"uid":      user.Properties.UniqueID,
+		"uid":      userID,
 		"eid":      eventID,
 		"uniqueID": uid,
 		"date":     time.Now(),
