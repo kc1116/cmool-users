@@ -54,6 +54,7 @@ var UserRelationships = map[string]string{
 	"Liked":        "LIKED",
 	"FriendOf":     "FRIEND_OF",
 	"EventComment": "EVENT_COMMENT",
+	"EventPhoto":   "EVENT_PHOTO",
 }
 
 // CreateUserNode . . . create a new user node from Event struct
@@ -183,9 +184,50 @@ func PostComment(comment string, eventID string, userID string) (string, error) 
 		return "", err
 	}
 	if len(res) == 0 {
-		err := errors.New("User node not found.")
+		err := errors.New("Error adding comment to event in graph.")
 		return "", err
 	}
 
 	return comment, nil
+}
+
+//PostPhoto ...
+func PostPhoto(photoURI string, eventID string, userID string) (string, error) {
+	uid := uuid.NewV4().String()
+	rel := UserRelationships["EventPhoto"]
+	stmt := `MATCH (event:Event)
+            WHERE event.UniqueID = {eid}
+		    MERGE (photo:EventPhoto {User:{uid},DatePosted:{date},Photo:{photoURI},UniqueID:{uniqueID}})-[r:` + rel + `]->(event)
+		    RETURN photo`
+
+	params := neoism.Props{
+		"uid":      userID,
+		"eid":      eventID,
+		"uniqueID": uid,
+		"date":     time.Now(),
+		"photo":    photoURI,
+	}
+
+	// query results
+	res := []struct {
+		Photo neoism.Node
+	}{}
+
+	cq := neoism.CypherQuery{
+		Statement:  stmt,
+		Parameters: params,
+		Result:     &res,
+	}
+
+	// execute query
+	err := Db.Cypher(&cq)
+	if err != nil {
+		return "", err
+	}
+	if len(res) == 0 {
+		err := errors.New("Error while adding photo to event graph.")
+		return "", err
+	}
+
+	return photoURI, nil
 }
