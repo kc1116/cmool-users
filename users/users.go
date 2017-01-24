@@ -205,7 +205,7 @@ func PostPhoto(photoURI string, eventID string, userID string) (string, error) {
 		"eid":      eventID,
 		"uniqueID": uid,
 		"date":     time.Now(),
-		"photo":    photoURI,
+		"photoURI": photoURI,
 	}
 
 	// query results
