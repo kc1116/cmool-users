@@ -27,6 +27,7 @@ type API interface {
 	postVideo() bool
 	sendFriendRequest() bool
 	acceptFriendRequest() bool
+	rate()
 }
 
 // User ... event struct for neo4j event nodes
