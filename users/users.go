@@ -152,7 +152,6 @@ func (user User) Attending(eventID string) (string, error) {
 //PostComment ...
 func (user User) PostComment(comment string, eventID string, userID string) (string, error) {
 	uid := uuid.NewV4().String()
-
 	stmt := `
 		MERGE (comment:EventComment {
 				User: {uid},
