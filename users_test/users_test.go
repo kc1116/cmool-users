@@ -72,7 +72,7 @@ func TestPostComment(t *testing.T) {
 	} else {
 		t.Logf("TestPostComment:%+v\n", c)
 	}
-}*/
+}
 
 func TestPostPhoto(t *testing.T) {
 	photoURI := "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwin7rWwjNrRAhXFdSYKHX1PBAIQjRwIBw&url=https%3A%2F%2Ftwitter.com%2Fneo4j&bvm=bv.144686652,d.eWE&psig=AFQjCNHrTojApeJcEGsumzMdtloVirC0og&ust=1485323771031443"
@@ -84,5 +84,16 @@ func TestPostPhoto(t *testing.T) {
 		t.Error("Expected an photo URI got an error:", err.Error())
 	} else {
 		t.Logf("TestPostPhoto:%+v\n", c)
+	}
+}*/
+func TestLikeEvent(t *testing.T) {
+	eventID := "ff5cabd1-c941-44b7-b6dc-2d31c5ac69a4"
+	userID := "daa72fb3-9964-43be-8288-dece8389eba6"
+
+	err := users.LikeEvent(eventID, userID)
+	if err != nil {
+		t.Error("Expected nil got an error:", err.Error())
+	} else {
+		t.Logf("TestLikeEvent: Success")
 	}
 }
