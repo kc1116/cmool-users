@@ -59,7 +59,7 @@ func TestUserAttending(t *testing.T) {
 	} else {
 		t.Logf("TestUserAttending:%+v\n", eid)
 	}
-}*/
+}
 
 func TestPostComment(t *testing.T) {
 	comment := "This party is great!"
@@ -72,7 +72,7 @@ func TestPostComment(t *testing.T) {
 	} else {
 		t.Logf("TestPostComment:%+v\n", c)
 	}
-}
+}*/
 
 func TestPostPhoto(t *testing.T) {
 	photoURI := "https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwin7rWwjNrRAhXFdSYKHX1PBAIQjRwIBw&url=https%3A%2F%2Ftwitter.com%2Fneo4j&bvm=bv.144686652,d.eWE&psig=AFQjCNHrTojApeJcEGsumzMdtloVirC0og&ust=1485323771031443"
