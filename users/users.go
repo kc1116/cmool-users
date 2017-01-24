@@ -24,10 +24,7 @@ func init() {
 
 //API ... interface to be implemented by user struct
 type API interface {
-	attending() events.Event
 	postVideo() bool
-	postComment() bool
-	postPhoto() bool
 	sendFriendRequest() bool
 	acceptFriendRequest() bool
 }
@@ -230,4 +227,44 @@ func PostPhoto(photoURI string, eventID string, userID string) (string, error) {
 	}
 
 	return photoURI, nil
+}
+
+//LikeEvent ...
+func LikeEvent(eventID string, userID string) error {
+	rel := UserRelationships["Liked"]
+	stmt := `
+		MATCH (user:User),(event:Event)
+        WHERE user.UniqueID = {userid} AND event.UniqueID = {eventid}
+		ON MATCH SET event.Likes = event.Likes + 1
+        CREATE UNIQUE (user)-[r:` + rel + `]->(event)
+        RETURN r
+	`
+
+	params := neoism.Props{
+		"uid": userID,
+		"eid": eventID,
+	}
+
+	// query results
+	res := []struct {
+		R neoism.Node
+	}{}
+
+	cq := neoism.CypherQuery{
+		Statement:  stmt,
+		Parameters: params,
+		Result:     &res,
+	}
+
+	// execute query
+	err := Db.Cypher(&cq)
+	if err != nil {
+		return err
+	}
+	if len(res) == 0 {
+		err := errors.New("Error while liking event.")
+		return err
+	}
+
+	return nil
 }
