@@ -158,7 +158,7 @@ func PostComment(comment string, eventID string, userID string) (string, error) 
 				DatePosted: {date},
 				Comment:{comment},
 				UniqueID:{uniqueID},
-})-[` + UserRelationships["EventComment"] + `]->(event:Event {UniqueID: {eid} })
+})-[r:` + UserRelationships["EventComment"] + `]->(event:Event {UniqueID: {eid} })
 	RETURN comment
 	`
 	params := neoism.Props{
