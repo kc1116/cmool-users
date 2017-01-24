@@ -233,9 +233,9 @@ func PostPhoto(photoURI string, eventID string, userID string) (string, error) {
 func LikeEvent(eventID string, userID string) error {
 	rel := UserRelationships["Liked"]
 	stmt := `
-		MERGE (user:User),(event:Event)
+		MATCH (user:User),(event:Event)
         WHERE user.UniqueID = {userid} AND event.UniqueID = {eventid}
-		ON MATCH SET event.Likes = event.Likes + 1
+		SET event.Likes = event.Likes + 1
         CREATE UNIQUE (user)-[r:` + rel + `]->(event)
         RETURN r`
 
