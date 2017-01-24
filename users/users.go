@@ -153,7 +153,7 @@ func (user User) Attending(eventID string) (string, error) {
 func PostComment(comment string, eventID string, userID string) (string, error) {
 	uid := uuid.NewV4().String()
 	rel := UserRelationships["EventComment"]
-	stm := `MATCH (event:Event)
+	stmt := `MATCH (event:Event)
             WHERE event.UniqueID = {eid}
 		    MERGE (comment:EventComment {User:{uid},DatePosted:{date},Comment:{comment},UniqueID:{uniqueID},})-[r:` + rel + `]->(event)
 		    RETURN comment`
