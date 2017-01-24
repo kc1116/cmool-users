@@ -73,5 +73,4 @@ func TestPostComment(t *testing.T) {
 	} else {
 		t.Logf("TestPostComment:%+v\n", c)
 	}
-
 }
