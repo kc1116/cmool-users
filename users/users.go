@@ -155,7 +155,7 @@ func PostComment(comment string, eventID string, userID string) (string, error) 
 	rel := UserRelationships["EventComment"]
 	stmt := `MATCH (event:Event)
             WHERE event.UniqueID = {eid}
-		    MERGE (comment:EventComment {User:{uid},DatePosted:{date},Comment:{comment},UniqueID:{uniqueID},})-[r:` + rel + `]->(event)
+		    MERGE (comment:EventComment {User:{uid},DatePosted:{date},Comment:{comment},UniqueID:{uniqueID}})-[r:` + rel + `]->(event)
 		    RETURN comment`
 	params := neoism.Props{
 		"uid":      userID,
